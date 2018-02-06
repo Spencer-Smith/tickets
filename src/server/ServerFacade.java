@@ -6,9 +6,14 @@ import common.UserData;
 import common.response.*;
 import server.model.AllUsers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ServerFacade implements IServer {
 
     private static ServerFacade INSTANCE = null;
+
+    private List<ClientProxy> clientProxies;
 
     public static ServerFacade getInstance() {
         if (INSTANCE == null) {
@@ -17,12 +22,15 @@ public class ServerFacade implements IServer {
         return INSTANCE;
     }
 
-    private ServerFacade(){}
+    private ServerFacade(){
+        clientProxies = new ArrayList<>();
+    }
 
     @Override
     public LoginResponse login(UserData userData) {
         if (AllUsers.getInstance().verifyLogin(userData.getUsername(), userData.getPassword())){
             String authToken = AllUsers.getInstance().createAuthToken(userData.getUsername());
+            clientProxies.add(new ClientProxy(authToken));
             return new LoginResponse("Welcome, " + userData.getUsername(), authToken);
         }
         else return new LoginResponse(new Exception("Username or password is incorrect."));
@@ -36,6 +44,7 @@ public class ServerFacade implements IServer {
         else{
             AllUsers.getInstance().addUser(userData.getUsername(), userData.getPassword());
             String authToken = AllUsers.getInstance().createAuthToken(userData.getUsername());
+            clientProxies.add(new ClientProxy(authToken));
             return new LoginResponse("Welcome, " + userData.getUsername(), authToken);
         }
     }
