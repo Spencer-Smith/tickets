@@ -22,47 +22,47 @@ public class ClientProxy implements IClient {
 
     @Override
     public void addLobbyToList(Lobby lobby) {
-        unprocessedCommands.add(new Command(new Object[]{lobby}, new String[]{Lobby.class.getName()}, "addLobbyToList"));
+        unprocessedCommands.add(new Command("addLobbyToList", new String[]{Lobby.class.getName()}, new Object[]{lobby}));
     }
 
     @Override
     public void removeLobbyFromList(Lobby lobby) {
-        unprocessedCommands.add(new Command(new Object[]{lobby}, new String[]{Lobby.class.getName()}, "removeLobbyFromList"));
+        unprocessedCommands.add(new Command("removeLobbyFromList", new String[]{Lobby.class.getName()}, new Object[]{lobby}));
     }
 
     @Override
     public void addPlayersToLobbyInList(Lobby lobby, int numToAdd) {
         unprocessedCommands.add(new Command(
-                new Object[]{lobby, numToAdd},
+                "addPlayersToLobbyInList",
                 new String[]{Lobby.class.getName(), int.class.getName()},
-                "addPlayersToLobbyInList"));
+                new Object[]{lobby, numToAdd}));
     }
 
     @Override
     public void removePlayersFromLobbyInList(Lobby lobby, int numToRemove) {
         unprocessedCommands.add(new Command(
-                new Object[]{lobby, numToRemove},
+                "removePlayersFromLobbyInList",
                 new String[]{Lobby.class.getName(), int.class.getName()},
-                "removePlayersFromLobbyInList"));
+                new Object[]{lobby, numToRemove}));
     }
 
     @Override
     public void addPlayer(Player player) {
-        unprocessedCommands.add(new Command(new Object[]{player}, new String[]{Player.class.getName()}, "addPlayer"));
+        unprocessedCommands.add(new Command("addPlayer", new String[]{Player.class.getName()}, new Object[]{player}));
     }
 
     @Override
     public void removePlayer(Player player) {
-        unprocessedCommands.add(new Command(new Object[]{player}, new String[]{Player.class.getName()}, "removePlayer"));
+        unprocessedCommands.add(new Command("removePlayer", new String[]{Player.class.getName()}, new Object[]{player}));
     }
 
     @Override
     public void startGame() {
-        unprocessedCommands.add(new Command(new Object[0], new String[0], "startGame"));
+        unprocessedCommands.add(new Command("startGame", new String[0], new Object[0]));
     }
 
     @Override
     public void endCurrentTurn() {
-        unprocessedCommands.add(new Command(new Object[0], new String[0], "endCurrentTurn"));
+        unprocessedCommands.add(new Command("endCurrentTurn", new String[0], new Object[0]));
     }
 }
