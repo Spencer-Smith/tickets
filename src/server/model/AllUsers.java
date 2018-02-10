@@ -1,7 +1,9 @@
 package server.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import common.UserData;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class AllUsers {
@@ -15,34 +17,51 @@ public class AllUsers {
         return INSTANCE;
     }
 
-    private Map<String, String> usernamePassword;
-    private Map<String, String> authTokenUsername;
+    private List<UserData> users;
 
     private AllUsers(){
-        usernamePassword = new HashMap<>();
-        authTokenUsername = new HashMap<>();
-    }
-
-    public boolean verifyLogin(String username, String password){
-        if (usernamePassword.containsKey(username)){
-            if (usernamePassword.get(username).equals(password)) return true;
-        }
-
-        return false;
-    }
-
-    public void addUser(String username, String password){
-        usernamePassword.put(username, password);
-    }
-
-    public String createAuthToken(String username){
-        String newAuthToken = UUID.randomUUID().toString();
-        authTokenUsername.put(newAuthToken, username);
-        return newAuthToken;
+        users = new ArrayList<>();
     }
 
     public boolean userExists(String username) {
-        if (usernamePassword.containsKey(username)) return true;
-        else return false;
+        for (UserData user: users){
+            if (user.getUsername().equals(username)) return true;
+        }
+        return false;
+    }
+
+    public boolean verifyLogin(String username, String password){
+        for (UserData user: users){
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) return true;
+        }
+        return false;
+    }
+
+    public boolean authenticateUser(String authToken) {
+        for (UserData user : users) {
+            if (user.getAuthenticationToken().equals(authToken)) return true;
+        }
+        return false;
+    }
+
+    public String getUsername(String authToken){
+        for (UserData user : users){
+            if (user.getUsername().equals(authToken)) return user.getUsername();
+        }
+        return null;
+    }
+
+    public String getAuthToken(String username){
+        for (UserData user : users){
+            if (user.getUsername().equals(username)) return user.getAuthenticationToken();
+        }
+        return null;
+    }
+
+    public String addUser(UserData user){
+        String newAuthToken = UUID.randomUUID().toString();
+        user.setAuthenticationToken(newAuthToken);
+        users.add(user);
+        return newAuthToken;
     }
 }

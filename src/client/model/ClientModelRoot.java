@@ -2,6 +2,7 @@ package client.model;
 
 import java.util.Map;
 
+import common.Game;
 import common.Lobby;
 import common.UserData;
 import client.model.observable.ClientObservable;
