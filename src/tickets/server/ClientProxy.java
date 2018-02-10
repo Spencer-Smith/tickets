@@ -1,4 +1,4 @@
-package server;
+package tickets.server;
 
 import tickets.common.Command;
 import tickets.common.IClient;

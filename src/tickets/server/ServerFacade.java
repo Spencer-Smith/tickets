@@ -1,17 +1,15 @@
-package server;
+package tickets.server;
 
-import common.Game;
-import server.model.AllLobbies;
+import tickets.common.Game;
+import tickets.server.model.AllLobbies;
 import tickets.common.IServer;
 import tickets.common.Lobby;
 import tickets.common.Player;
 import tickets.common.UserData;
 import tickets.common.response.*;
-import server.model.AllUsers;
+import tickets.server.model.AllUsers;
 
 import java.util.*;
-
-//IMPORTANT -- All operations other than login and register need an auth token passed in
 
 public class ServerFacade implements IServer {
 

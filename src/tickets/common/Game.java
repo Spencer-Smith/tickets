@@ -1,4 +1,4 @@
-package common;
+package tickets.common;
 
 public class Game {
 

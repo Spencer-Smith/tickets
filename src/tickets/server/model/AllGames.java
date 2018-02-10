@@ -1,6 +1,6 @@
-package server.model;
+package tickets.server.model;
 
-import common.Game;
+import tickets.common.Game;
 
 import java.util.ArrayList;
 import java.util.List;
