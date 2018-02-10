@@ -1,12 +1,12 @@
 package server;
 
 import common.Game;
-import common.IServer;
-import common.Lobby;
-import common.Player;
-import common.UserData;
-import common.response.*;
 import server.model.AllLobbies;
+import tickets.common.IServer;
+import tickets.common.Lobby;
+import tickets.common.Player;
+import tickets.common.UserData;
+import tickets.common.response.*;
 import server.model.AllUsers;
 
 import java.util.*;

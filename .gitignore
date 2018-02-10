@@ -1,6 +1,19 @@
 /bin/
+
+.idea/
+.gradle/
+*.iml
+<<<<<<< HEAD
+/out/
+=======
+
+/out/
+
+# Java generated/utility files
+.class
 .classpath
 .project
-.idea/
-*.iml
+
 /out/
+
+>>>>>>> e204faf210ff6833df4bacde3b494fb84fb4b167
