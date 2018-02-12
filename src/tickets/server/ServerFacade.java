@@ -1,6 +1,7 @@
 package tickets.server;
 
 import tickets.common.Game;
+import tickets.server.model.AllGames;
 import tickets.server.model.AllLobbies;
 import tickets.common.IServer;
 import tickets.common.Lobby;
@@ -113,12 +114,19 @@ public class ServerFacade implements IServer {
         Lobby lobby = AllLobbies.getInstance().getLobby(lobbyID);
         if (lobby == null) return new StartGameResponse(new Exception("Lobby does not exist."));
         else {
-            // Update relevant clients
+            Game game = new Game(UUID.randomUUID().toString());
+            // Update relevant clients and move clients from lobby to game
             for (ClientProxy client : getClientsInLobby(lobbyID)) {
                 // The current client will receive a start game response instead of this command.
                 if (!client.getAuthToken().equals(authToken)) client.startGame();
+                clientsInALobby.remove(client);
+                clientsInAGame.put(client, game);
             }
-            Game game = new Game(UUID.randomUUID().toString());
+            for (ClientProxy client: clientsInLobbyList) {
+                client.removeLobbyFromList(lobby);
+            }
+
+            AllGames.getInstance().addGame(game);
             return new StartGameResponse(game.getGameId());
         }
     }
@@ -173,7 +181,19 @@ public class ServerFacade implements IServer {
 
     @Override
     public PlayerTurnResponse takeTurn(String playerID, String authToken) {
-        return null;
+        Game game = clientsInAGame.get(getProxy(authToken));
+        if (game == null) return new PlayerTurnResponse(new Exception("Game does not exist."));
+        else {
+            // Update server model (COMING SOON IN THE NEXT PHASE)
+
+            // Update relevant clients
+            for (ClientProxy client : getClientsInGame(game.getGameId())) {
+                // The current client will receive a player turn response instead of this command.
+                if (!client.getAuthToken().equals(authToken)) client.endCurrentTurn();
+            }
+
+            return new PlayerTurnResponse();
+        }
     }
 
     // PRIVATE HELPER METHODS------------------------------------------------------------------------------------------
@@ -198,6 +218,16 @@ public class ServerFacade implements IServer {
 
         for (Map.Entry<ClientProxy, Lobby> entry : clientsInALobby.entrySet()) {
             if (entry.getValue().equals(lobby)) result.add(entry.getKey());
+        }
+        return result;
+    }
+
+    private List<ClientProxy> getClientsInGame(String gameID) {
+        Game game = AllGames.getInstance().getGame(gameID);
+        List<ClientProxy> result = new ArrayList<>();
+
+        for (Map.Entry<ClientProxy, Game> entry : clientsInAGame.entrySet()) {
+            if (entry.getValue().equals(game)) result.add(entry.getKey());
         }
         return result;
     }
