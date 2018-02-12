@@ -60,6 +60,8 @@ public class ServerFacade implements IServer {
 
     @Override
     public JoinLobbyResponse joinLobby(String lobbyID, String authToken) {
+        if (getProxy(authToken) == null) return new JoinLobbyResponse(new Exception("You are not an authorized user!"));
+
         Lobby lobby = AllLobbies.getInstance().getLobby(lobbyID);
         if (lobby == null) return new JoinLobbyResponse(new Exception("Lobby does not exist."));
         else if (lobby.getCurrentMembers() == lobby.getMaxMembers()) return new JoinLobbyResponse(new Exception("Lobby is full."));
@@ -87,6 +89,8 @@ public class ServerFacade implements IServer {
 
     @Override
     public JoinLobbyResponse createLobby(Lobby lobby, String authToken) {
+        if (getProxy(authToken) == null) return new JoinLobbyResponse(new Exception("You are not an authorized user!"));
+
         // Update the server model
         AllLobbies.getInstance().addLobby(lobby);
 
@@ -104,6 +108,8 @@ public class ServerFacade implements IServer {
 
     @Override
     public LogoutResponse logout(String authToken) {
+        if (getProxy(authToken) == null) return new LogoutResponse(new Exception("You are not an authorized user!"));
+
         ClientProxy client = getProxy(authToken);
         clientsInLobbyList.remove(client);
         return new LogoutResponse("Logout successful");
@@ -111,6 +117,8 @@ public class ServerFacade implements IServer {
 
     @Override
     public StartGameResponse startGame(String lobbyID, String authToken) {
+        if (getProxy(authToken) == null) return new StartGameResponse(new Exception("You are not an authorized user!"));
+
         Lobby lobby = AllLobbies.getInstance().getLobby(lobbyID);
         if (lobby == null) return new StartGameResponse(new Exception("Lobby does not exist."));
         else {
@@ -133,6 +141,8 @@ public class ServerFacade implements IServer {
 
     @Override
     public LeaveLobbyResponse leaveLobby(String lobbyID, String authToken) {
+        if (getProxy(authToken) == null) return new LeaveLobbyResponse(new Exception("You are not an authorized user!"));
+
         Lobby lobby = AllLobbies.getInstance().getLobby(lobbyID);
         if (lobby == null) return new LeaveLobbyResponse(new Exception("Lobby does not exist."));
         else {
@@ -159,6 +169,8 @@ public class ServerFacade implements IServer {
 
     @Override
     public AddGuestResponse addGuest(String lobbyID, String authToken) {
+        if (getProxy(authToken) == null) return new AddGuestResponse(new Exception("You are not an authorized user!"));
+
         Lobby lobby = AllLobbies.getInstance().getLobby(lobbyID);
         if (lobby == null) return new AddGuestResponse(new Exception("Lobby does not exist."));
         else if (lobby.getCurrentMembers() == lobby.getMaxMembers()) return new AddGuestResponse(new Exception("Lobby is full."));
@@ -181,6 +193,8 @@ public class ServerFacade implements IServer {
 
     @Override
     public PlayerTurnResponse takeTurn(String playerID, String authToken) {
+        if (getProxy(authToken) == null) return new PlayerTurnResponse(new Exception("You are not an authorized user!"));
+
         Game game = clientsInAGame.get(getProxy(authToken));
         if (game == null) return new PlayerTurnResponse(new Exception("Game does not exist."));
         else {
