@@ -1,26 +1,30 @@
 
 package tickets.client.async;
 
-import android.os.AsyncTask;
+// import android.os.AsyncTask;
 
 import tickets.common.UserData;
 import tickets.common.response.JoinLobbyResponse;
 import tickets.common.Lobby;
+import tickets.common.IMessage;
+import tickets.common.ClientStateChange;
+import tickets.common.ExceptionMessage;
 
 import tickets.client.ServerProxy;
 import tickets.client.gui.presenters.ILoginPresenter;
-import tickets.client.model.observable.*;
-import tickets.client.model.ClientModelRoot;
+import tickets.client.ModelFacade;
 
 
-class CreateLobbyAsync extends AsyncTask<Object, Void, JoinLobbyResponse> {
-	ClientModelRoot modelRoot;
+class CreateLobbyAsync /*extends AsyncTask<Object, Void, JoinLobbyResponse>*/ {
+	ModelFacade modelRoot;
 
-	public CreateLobbyAsync(ClientModelRoot setRoot) {
+	public CreateLobbyAsync(ModelFacade setRoot) {
 		modelRoot = setRoot;
 	}
 
-	@Override
+	public void execute(Object... args) {}
+
+	// @Override
 	public JoinLobbyResponse doInBackground(Object... data) {
 		if (data.length != 2) {
 			AsyncException error = new AsyncException(this.getClass(), "invalid execute() parameters");
@@ -34,10 +38,10 @@ class CreateLobbyAsync extends AsyncTask<Object, Void, JoinLobbyResponse> {
 		return response;
 	}
 
-	@Override
+	// @Override
 	public void onPostExecute(JoinLobbyResponse response) {
 		if (response.getException() == null) {
-			//Since the created lobby isn't in lobbyList...?
+			//Since the created lobby isn't 
 			//
 			// Lobby currentLobby = modelRoot.getLobby(response.getLobbyID());
 			// currentLobby.setHistory(response.getHistory());

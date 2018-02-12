@@ -1,24 +1,28 @@
 
 package tickets.client.async;
 
- import android.os.AsyncTask;
+// import android.os.AsyncTask;
 
 import tickets.common.UserData;
 import tickets.common.response.LoginResponse;
+import tickets.common.IMessage;
+import tickets.common.ClientStateChange;
+import tickets.common.ExceptionMessage;
 
 import tickets.client.ServerProxy;
-import tickets.client.model.ClientModelRoot;
-import tickets.client.model.observable.*;
+import tickets.client.ModelFacade;
 
 
-class LoginAsync extends AsyncTask<UserData, Void, LoginResponse> {
-	ClientModelRoot modelRoot;
+class LoginAsync /*extends AsyncTask<UserData, Void, LoginResponse>*/ {
+	ModelFacade modelRoot;
 
-	public LoginAsync(ClientModelRoot setRoot) {
+	public LoginAsync(ModelFacade setRoot) {
 		modelRoot = setRoot;
 	}
 
-	@Override
+	public void execute(UserData... args) {}
+
+	// @Override
 	public LoginResponse doInBackground(UserData... data) {
 		if (data.length != 1) {
 			AsyncException error = new AsyncException(this.getClass(), "invalid execute() parameters");
@@ -29,10 +33,10 @@ class LoginAsync extends AsyncTask<UserData, Void, LoginResponse> {
 		return response;
 	}
 
-	@Override
+	// @Override
 	public void onPostExecute(LoginResponse response) {
 		if (response.getException() == null) {
-			modelRoot.addAuthenticationToken(response.getAuthToken());
+			modelRoot.addAuthToken(response.getAuthToken());
 
 			ClientStateChange.ClientState stateVal;
 			stateVal = ClientStateChange.ClientState.lobbylist;

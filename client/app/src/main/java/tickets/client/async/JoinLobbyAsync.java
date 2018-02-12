@@ -1,26 +1,30 @@
 
 package tickets.client.async;
 
-import android.os.AsyncTask;
+// import android.os.AsyncTask;
 
 import tickets.common.UserData;
 import tickets.common.response.JoinLobbyResponse;
 import tickets.common.Lobby;
+import tickets.common.IMessage;
+import tickets.common.ClientStateChange;
+import tickets.common.ExceptionMessage;
 
 import tickets.client.ServerProxy;
 import tickets.client.gui.presenters.ILoginPresenter;
-import tickets.client.model.observable.*;
-import tickets.client.model.ClientModelRoot;
+import tickets.client.ModelFacade;
 
 
-class JoinLobbyAsync extends AsyncTask<String, Void, JoinLobbyResponse> {
-	ClientModelRoot modelRoot;
+class JoinLobbyAsync /*extends AsyncTask<String, Void, JoinLobbyResponse>*/ {
+	ModelFacade modelRoot;
 
-	public JoinLobbyAsync(ClientModelRoot setRoot) {
+	public JoinLobbyAsync(ModelFacade setRoot) {
 		modelRoot = setRoot;
 	}
 
-	@Override
+	public void execute(String... data) {}
+
+	// @Override
 	public JoinLobbyResponse doInBackground(String... data) {
 		if (data.length != 2) {
 			AsyncException error = new AsyncException(this.getClass(), "invalid execute() parameters");
@@ -33,12 +37,10 @@ class JoinLobbyAsync extends AsyncTask<String, Void, JoinLobbyResponse> {
 		return response;
 	}
 
-	@Override
+	// @Override
 	public void onPostExecute(JoinLobbyResponse response) {
 		if (response.getException() == null) {
-			Lobby currentLobby = modelRoot.getLobby(response.getLobbyID());
-			currentLobby.setHistory(response.getLobbyHistory());
-			modelRoot.setCurrentLobby(currentLobby);
+			modelRoot.setCurrentLobby(response.getLobby());
 
 			ClientStateChange.ClientState stateVal = ClientStateChange.ClientState.lobby;
 			ClientStateChange state = new ClientStateChange(stateVal);
