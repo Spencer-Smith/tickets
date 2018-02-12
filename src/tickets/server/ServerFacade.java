@@ -1,12 +1,8 @@
 package tickets.server;
 
-import tickets.common.Game;
+import tickets.common.*;
 import tickets.server.model.AllGames;
 import tickets.server.model.AllLobbies;
-import tickets.common.IServer;
-import tickets.common.Lobby;
-import tickets.common.Player;
-import tickets.common.UserData;
 import tickets.common.response.*;
 import tickets.server.model.AllUsers;
 
@@ -38,7 +34,7 @@ public class ServerFacade implements IServer {
         if (AllUsers.getInstance().verifyLogin(userData.getUsername(), userData.getPassword())){
             String authToken = AllUsers.getInstance().getAuthToken(userData.getUsername());
             clientsInLobbyList.add(new ClientProxy(authToken));
-            return new LoginResponse("Welcome, " + userData.getUsername(), authToken);
+            return new LoginResponse("Welcome, " + userData.getUsername(), authToken, AllLobbies.getInstance().getAllLobbies());
         }
         else if (!AllUsers.getInstance().userExists(userData.getUsername())){
             return new LoginResponse(new Exception("Username is incorrect."));
@@ -54,7 +50,7 @@ public class ServerFacade implements IServer {
         else{
             String authToken = AllUsers.getInstance().addUser(userData);
             clientsInLobbyList.add(new ClientProxy(authToken));
-            return new LoginResponse("Welcome, " + userData.getUsername(), authToken);
+            return new LoginResponse("Welcome, " + userData.getUsername(), authToken, AllLobbies.getInstance().getAllLobbies());
         }
     }
 
@@ -83,7 +79,7 @@ public class ServerFacade implements IServer {
             for (ClientProxy client : getClientsInLobby(lobbyID)) {
                 client.addPlayer(player);
             }
-            return new JoinLobbyResponse(lobbyID, lobby.getHistory());
+            return new JoinLobbyResponse(lobby);
         }
     }
 
@@ -103,7 +99,7 @@ public class ServerFacade implements IServer {
         for (ClientProxy client : clientsInLobbyList) {
             client.addLobbyToList(lobby);
         }
-        return new JoinLobbyResponse(lobby.getId(), lobby.getHistory());
+        return new JoinLobbyResponse(lobby);
     }
 
     @Override
@@ -122,7 +118,11 @@ public class ServerFacade implements IServer {
         Lobby lobby = AllLobbies.getInstance().getLobby(lobbyID);
         if (lobby == null) return new StartGameResponse(new Exception("Lobby does not exist."));
         else {
+            // Update server model
+            AllLobbies.getInstance().removeLobby(lobbyID);
             Game game = new Game(UUID.randomUUID().toString());
+            AllGames.getInstance().addGame(game);
+
             // Update relevant clients and move clients from lobby to game
             for (ClientProxy client : getClientsInLobby(lobbyID)) {
                 // The current client will receive a start game response instead of this command.
@@ -163,7 +163,7 @@ public class ServerFacade implements IServer {
                     client.removePlayerFromLobbyInList(lobby, player);
                 }
             }
-            return new LeaveLobbyResponse("You have left the lobby.");
+            return new LeaveLobbyResponse("You have left the lobby.", AllLobbies.getInstance().getAllLobbies());
         }
     }
 
@@ -207,6 +207,30 @@ public class ServerFacade implements IServer {
             }
 
             return new PlayerTurnResponse();
+        }
+    }
+
+    @Override
+    public ClientUpdate updateClient(String lastReceivedCommandID, String authToken) {
+        ClientProxy client = getProxy(authToken);
+        Queue<Command> commands = client.getUnprocessedCommands();
+        Map<Command, String> commandIDs = client.getCommandIDs();
+
+        // Remove commands until the last received command
+        while ((commands.peek() != null) && (!commandIDs.get(commands.peek()).equals(lastReceivedCommandID))) {
+            commandIDs.remove(commands.peek());
+            commands.remove();
+        }
+
+        // Update the client proxy
+        client.setCommandIDs(commandIDs);
+        client.setUnprocessedCommands(commands);
+
+        if (commands.peek() == null) return new ClientUpdate(null, lastReceivedCommandID);
+        else {
+            Command lastCommand = (Command) commands.toArray()[commands.toArray().length - 1];
+            String lastID = commandIDs.get(lastCommand);
+            return new ClientUpdate(commands, lastID);
         }
     }
 
