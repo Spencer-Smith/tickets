@@ -1,4 +1,4 @@
-#Mon Feb 12 11:21:11 MST 2018
+#Mon Feb 12 14:46:18 MST 2018
 path.1=classes.dex
 path.0=classes.dex
 renamed.5=classes6.dex
@@ -11,8 +11,8 @@ base.5=/Users/Howl/Documents/BYU/CS/340/phase_1/tickets/client/app/build/interme
 base.4=/Users/Howl/Documents/BYU/CS/340/phase_1/tickets/client/app/build/intermediates/transforms/dexMerger/debug/13
 base.3=/Users/Howl/Documents/BYU/CS/340/phase_1/tickets/client/app/build/intermediates/transforms/dexMerger/debug/15
 base.2=/Users/Howl/Documents/BYU/CS/340/phase_1/tickets/client/app/build/intermediates/transforms/dexMerger/debug/12
-base.1=/Users/Howl/Documents/BYU/CS/340/phase_1/tickets/client/app/build/intermediates/transforms/dexMerger/debug/17
-base.0=/Users/Howl/Documents/BYU/CS/340/phase_1/tickets/client/app/build/intermediates/transforms/dexMerger/debug/14
+base.1=/Users/Howl/Documents/BYU/CS/340/phase_1/tickets/client/app/build/intermediates/transforms/dexMerger/debug/14
+base.0=/Users/Howl/Documents/BYU/CS/340/phase_1/tickets/client/app/build/intermediates/transforms/dexMerger/debug/11
 path.5=classes.dex
 path.4=classes.dex
 path.3=classes.dex

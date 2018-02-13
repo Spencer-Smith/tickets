@@ -14,6 +14,7 @@ public class Lobby {
 	private List<Player> players;
 	
 	public Lobby(String name, int maxMembers) {
+
 		this.name = name;
 		this.id = null;
 		currentMembers = 0;

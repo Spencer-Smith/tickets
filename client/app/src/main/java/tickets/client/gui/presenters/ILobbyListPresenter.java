@@ -1,7 +1,7 @@
 
 package tickets.client.gui.presenters;
 
-import java.util.Map;
+import java.util.List;
 
 import tickets.common.Lobby;
 import tickets.common.IMessage;
@@ -11,7 +11,7 @@ import tickets.common.IObservable;
 
 public interface ILobbyListPresenter extends IObserver {
 
-	public Map<String, Lobby> getLobbyList();
+	public List<Lobby> getLobbyList();
 
 	public void createLobby(Lobby lobby);
 	public void joinLobby(String id);

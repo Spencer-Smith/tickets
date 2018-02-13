@@ -1,32 +1,39 @@
 package tickets.client.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import tickets.common.Lobby;
 import tickets.common.Player;
 
 public class LobbyManager {
-	private Map<String, Lobby> lobbyList;
+	private List<Lobby> lobbyList;
 
-	public Map<String, Lobby> getLobbyList() {
+	public List<Lobby> getLobbyList() {
 		return lobbyList;
 	}
 	
 	public LobbyManager() {
-		lobbyList = new HashMap<>();
+		lobbyList = new ArrayList<>();
 	}
 	
-	public void updateLobbyList(Map<String, Lobby> lobbyList) {
+	public void updateLobbyList(List<Lobby> lobbyList) {
 		this.lobbyList = lobbyList;
 	}
 	
 	public Lobby getLobby(String id) {
-		return lobbyList.get(id);
+		for (Lobby l : lobbyList) {
+			if (l.getId() == id) {
+				return l;
+			}
+		}
+		throw new RuntimeException("invalid lobby id");
 	}
 
 	public void addLobby(Lobby lobby) {
-		lobbyList.put(lobby.getId(), lobby);
+		lobbyList.add(lobby);
 	}
 
 	public void removeLobby(Lobby lobby) {
@@ -34,10 +41,12 @@ public class LobbyManager {
 	}
 
 	public void addPlayer(Lobby lobby, Player player) {
-		lobbyList.get(lobby.getId()).addPlayer(player);
+		getLobby(lobby.getId()).addPlayer(player);
+		return;
 	}
 
 	public void removePlayer(Lobby lobby, Player player) {
-		lobbyList.get(lobby.getId()).removePlayer(player);
+		getLobby(lobby.getId()).removePlayer(player);
+		return;
 	}
 }

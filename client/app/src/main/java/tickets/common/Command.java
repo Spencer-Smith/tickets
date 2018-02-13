@@ -6,9 +6,8 @@ import java.lang.reflect.Method;
 
 import com.google.gson.Gson;
 
-import tickets.server.ServerFacade;
 
-public class Command {
+public class Command implements ICommand {
 
 	private String methodName;
 	private String[] parameterTypeNames;

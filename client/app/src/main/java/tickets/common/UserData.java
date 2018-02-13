@@ -20,7 +20,21 @@ public class UserData {
 		this.username = username;
 	}
 
-	public String getPassword() {
+	public boolean checkValues() {
+	    for (char c : username.toCharArray()) {
+	        if (!Character.isLetterOrDigit(c)) {
+	            return false;
+            }
+        }
+        for (char c : password.toCharArray()) {
+            if (!Character.isLetterOrDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String getPassword() {
 		return password;
 	}
 

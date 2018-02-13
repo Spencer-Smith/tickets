@@ -1,6 +1,8 @@
 
 package tickets.client.async;
 
+import android.os.AsyncTask;
+
 import tickets.common.response.LogoutResponse;
 import tickets.common.IMessage;
 import tickets.common.ClientStateChange;
@@ -10,16 +12,14 @@ import tickets.client.ModelFacade;
 import tickets.client.ServerProxy;
 
 
-public class LogoutAsync /*extends AsyncTask<String, Void, LogoutResponse>*/ {
+public class LogoutAsync extends AsyncTask<String, Void, LogoutResponse> {
 	ModelFacade modelRoot;
 
 	public LogoutAsync(ModelFacade root) {
 		modelRoot = root;
 	}
 
-	public void execute(Object... args) {}
-
-	// @Override
+	@Override
 	public LogoutResponse doInBackground(String... data) {
 		if (data.length != 1) {
 			AsyncException error = new AsyncException(this.getClass(), "invalid execute() parameters");
@@ -30,7 +30,7 @@ public class LogoutAsync /*extends AsyncTask<String, Void, LogoutResponse>*/ {
 		return response;
 	}
 
-	// @Override
+	@Override
 	public void onPostExecute(LogoutResponse response) {
 		if (response.getException() == null) {
 			ClientStateChange.ClientState stateVal;

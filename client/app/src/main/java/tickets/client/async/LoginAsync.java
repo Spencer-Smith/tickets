@@ -1,7 +1,7 @@
 
 package tickets.client.async;
 
-// import android.os.AsyncTask;
+import android.os.AsyncTask;
 
 import tickets.common.UserData;
 import tickets.common.response.LoginResponse;
@@ -13,14 +13,12 @@ import tickets.client.ServerProxy;
 import tickets.client.ModelFacade;
 
 
-class LoginAsync /*extends AsyncTask<UserData, Void, LoginResponse>*/ {
+class LoginAsync extends AsyncTask<UserData, Void, LoginResponse> {
 	ModelFacade modelRoot;
 
 	public LoginAsync(ModelFacade setRoot) {
 		modelRoot = setRoot;
 	}
-
-	public void execute(UserData... args) {}
 
 	// @Override
 	public LoginResponse doInBackground(UserData... data) {

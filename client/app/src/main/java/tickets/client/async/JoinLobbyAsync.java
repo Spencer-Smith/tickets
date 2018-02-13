@@ -1,7 +1,7 @@
 
 package tickets.client.async;
 
-// import android.os.AsyncTask;
+import android.os.AsyncTask;
 
 import tickets.common.UserData;
 import tickets.common.response.JoinLobbyResponse;
@@ -15,16 +15,14 @@ import tickets.client.gui.presenters.ILoginPresenter;
 import tickets.client.ModelFacade;
 
 
-class JoinLobbyAsync /*extends AsyncTask<String, Void, JoinLobbyResponse>*/ {
+class JoinLobbyAsync extends AsyncTask<String, Void, JoinLobbyResponse> {
 	ModelFacade modelRoot;
 
 	public JoinLobbyAsync(ModelFacade setRoot) {
 		modelRoot = setRoot;
 	}
 
-	public void execute(String... data) {}
-
-	// @Override
+	@Override
 	public JoinLobbyResponse doInBackground(String... data) {
 		if (data.length != 2) {
 			AsyncException error = new AsyncException(this.getClass(), "invalid execute() parameters");
@@ -37,7 +35,7 @@ class JoinLobbyAsync /*extends AsyncTask<String, Void, JoinLobbyResponse>*/ {
 		return response;
 	}
 
-	// @Override
+	@Override
 	public void onPostExecute(JoinLobbyResponse response) {
 		if (response.getException() == null) {
 			modelRoot.setCurrentLobby(response.getLobby());

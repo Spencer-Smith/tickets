@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import tickets.client.gui.presenters.IHolderActivity;
 import tickets.client.gui.presenters.LobbyPresenter;
 import tickets.common.Lobby;
@@ -49,6 +51,8 @@ public class LobbyActivity extends AppCompatActivity implements IHolderActivity 
         startGameButton = (Button) this.findViewById(R.id.start_game_button);
         leaveGame = (Button) this.findViewById(R.id.leave_game);
 
+        startGameButton.setEnabled(false);
+
         lobbyPlayerList = (RecyclerView) findViewById(R.id.lobby_player_list);
         updateWindow = (RecyclerView) findViewById(R.id.lobby_update_list);
 
@@ -77,7 +81,10 @@ public class LobbyActivity extends AppCompatActivity implements IHolderActivity 
             }
         });
 
-        updateUI();
+        lobbyPlayerAdapter = new LobbyPlayerAdapter(this);
+        lobbyPlayerList.setAdapter(lobbyPlayerAdapter);
+        updateAdapter = new UpdateAdapter(this);
+        updateWindow.setAdapter(updateAdapter);
 
     }
 
@@ -129,20 +136,25 @@ public class LobbyActivity extends AppCompatActivity implements IHolderActivity 
 
 
     public void updateUI() {
-        lobbyPlayerAdapter = new LobbyPlayerAdapter(this);
-        lobbyPlayerList.setAdapter(lobbyPlayerAdapter);
-        updateAdapter = new UpdateAdapter(this);
-        updateWindow.setAdapter(updateAdapter);
     }
 
 
     class LobbyPlayerAdapter extends RecyclerView.Adapter<LobbyPlayerHolder> {
         private LayoutInflater inflater;
-        private Player[] players;
+        private ArrayList<Player> players;
 
         public LobbyPlayerAdapter(Context context) {
             inflater = LayoutInflater.from(context);
-            players = (Player[]) currentLobby.getPlayers().toArray();
+            players = new ArrayList<>();
+            for (Player p : currentLobby.getPlayers()) {
+                players.add(p);
+            }
+
+            if(players.size() > 1 && players.size() < 6){
+                startGameButton.setEnabled(true);
+            } else {
+                startGameButton.setEnabled(false);
+            }
         }
 
         @Override
@@ -154,13 +166,13 @@ public class LobbyActivity extends AppCompatActivity implements IHolderActivity 
         // Grabs an individual row and assigns its values through the holder class.
         @Override
         public void onBindViewHolder(LobbyPlayerHolder holder, int position) {
-            Player item = players[position];
+            Player item = players.get(position);
             holder.bind(item);
         }
 
         @Override
         public int getItemCount() {
-            return players.length;
+            return players.size();
         }
 
     }

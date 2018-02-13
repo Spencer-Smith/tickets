@@ -2,11 +2,6 @@
 /out/
 *.iml
 
-# Android and Android Studio files
-.idea/
-.gradle/
-client/app/src/
-
 # Java generated/utility files
 .class
 .classpath

@@ -1,6 +1,8 @@
 
 package tickets.client.async;
 
+import android.os.AsyncTask;
+
 import tickets.common.response.LeaveLobbyResponse;
 import tickets.common.IMessage;
 import tickets.common.ClientStateChange;
@@ -10,16 +12,14 @@ import tickets.client.ModelFacade;
 import tickets.client.ServerProxy;
 
 
-public class LeaveLobbyAsync /*extends AsyncTask<String, Void, LeaveLobbyResponse>*/ {
+public class LeaveLobbyAsync extends AsyncTask<String, Void, LeaveLobbyResponse> {
 	ModelFacade modelRoot;
 
 	public LeaveLobbyAsync(ModelFacade setRoot) {
 		modelRoot = setRoot;
 	}
 
-	public void execute(Object... args) {}
-
-	// @Override
+    @Override
 	public LeaveLobbyResponse doInBackground(String... data) {
 		if (data.length != 2) {
 			AsyncException error = new AsyncException(this.getClass(), "invalid execute() parameters");
@@ -32,7 +32,7 @@ public class LeaveLobbyAsync /*extends AsyncTask<String, Void, LeaveLobbyRespons
 		return response;
 	}
 
-	// @Override
+	@Override
 	public void onPostExecute(LeaveLobbyResponse response) {
 		if (response.getException() == null) {
 			ClientStateChange.ClientState stateVal;

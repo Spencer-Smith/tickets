@@ -1,4 +1,3 @@
-
 package tickets.client;
 
 import java.util.ArrayList;
@@ -80,11 +79,11 @@ public class ModelFacade implements IClient {
 	}
 
 //Lobby Data access
-	public void updateLobbyList(Map<String, Lobby> lobbyList) {
+	public void updateLobbyList(List<Lobby> lobbyList) {
 		lobbyManager.updateLobbyList(lobbyList);
 	}
 
-	public Map<String, Lobby> getLobbyList() {
+	public List<Lobby> getLobbyList() {
 		return lobbyManager.getLobbyList();
 	}
 
@@ -174,22 +173,22 @@ public class ModelFacade implements IClient {
 
 //TO BE IMPLEMENTED
 	public void addLobbyToList(Lobby lobby) {
-		return;
+		lobbyManager.addLobby(lobby);
 	}
 	public void removeLobbyFromList(Lobby lobby) {
-		return;
+		lobbyManager.removeLobby(lobby);
 	}
 	public void addPlayerToLobbyInList(Lobby lobby, Player playerToAdd) {
-		return;
+		lobbyManager.addPlayer(lobby, playerToAdd);
 	}
 	public void removePlayerFromLobbyInList(Lobby lobby, Player player) {
-		return;
+		lobbyManager.removePlayer(lobby, player);
 	}
 	public void addPlayer(Player player) {
-		return;
+		localPlayers.add(player);
 	}
 	public void removePlayer(Player player) {
-		return;
+		localPlayers.remove(player);
 	}
 	public void startGame() {
 		return;
