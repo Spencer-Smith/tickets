@@ -6,6 +6,7 @@
 .idea/
 .gradle/
 client/app/src/
+client/app/build/
 
 # Java generated/utility files
 .class
