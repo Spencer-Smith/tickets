@@ -233,7 +233,6 @@ public class ModelFacade implements IClient {
         updateObservable(update);
     }
 
-
 //-------------------------------------------------
 //		IClient interface methods
 //
